@@ -69,5 +69,34 @@ function renderRides(ridesArray) {
 
 window.addEventListener('DOMContentLoaded', function() {
   // YOUR CODE
+
+  let allButtons = document.querySelectorAll('.filter-button')
+
+  for (let i = 0; i < allButtons.length; i++) {
+    let serviceButton = allButtons[i];
+    
+    serviceButton.addEventListener('click', async function(event) {
+      event.preventDefault()
+      document.querySelector('.rides').innerHTML = ''
+
+      let service = event.target.innerHTML
+
+      let response = await fetch(`https://kiei451.com/api/rides.json`)
+      let json = await response.json()
+
+      let newArray = []
+      for (let i = 0; i < json.length; i++) {
+        let ride = json[i]
+        if (service == 'All Rides'){
+          newArray.push(ride)
+        } else if (levelOfService(ride) == service){
+          newArray.push(ride)
+        }
+      }
+      renderRides(newArray)
+      console.log(newArray)
+      console.log(newArray.length)
+    })
+  }
 })
 
